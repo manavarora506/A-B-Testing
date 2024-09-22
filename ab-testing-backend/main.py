@@ -1,4 +1,6 @@
 import datetime
+import os
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, ValidationError
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -18,8 +20,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# MongoDB setup
-MONGO_URL = "mongodb+srv://manavarora506:oa5xn0dtHBnPJEdu@cluster0.5gqqn.mongodb.net" 
+# Load environment variables from the .env file
+load_dotenv()
+
+# Access the MongoDB URI from the environment variable
+MONGO_URL = os.getenv("MONGO_URL")
 client = AsyncIOMotorClient(MONGO_URL, tls=True, tlsCAFile=certifi.where())
 db = client['contact_form_db']
 form_submissions_collection = db['form_submissions']
